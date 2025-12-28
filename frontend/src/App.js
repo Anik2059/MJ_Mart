@@ -4,19 +4,16 @@ import Navbar from "./components/Navbar";
 import ProductCard from "./components/ProductCard";
 import HeroBanner from "./components/HeroBanner";
 import CategoryBar from "./components/CategoryBar";
-
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import axios from "axios";
 import Footer from "./components/Footer";
-
-
 import { CartProvider } from "./context/CartContext";
 import { ToastProvider } from "./context/ToastProvider";
 
-// Home Page
+// Home Page Component
 function HomePage({ products }) {
   return (
     <div style={{ padding: "20px" }}>
@@ -35,9 +32,12 @@ function HomePage({ products }) {
 function App() {
   const [products, setProducts] = useState([]);
 
+  // Use the Vercel Environment Variable if it exists, otherwise fallback to localhost
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get(`${API_BASE_URL}/api/products`)
       .then((response) => {
         console.log("PRODUCTS FROM BACKEND:", response.data);
         setProducts(response.data);
@@ -45,7 +45,7 @@ function App() {
       .catch((error) => {
         console.log("Error fetching products", error);
       });
-  }, []);
+  }, [API_BASE_URL]);
 
   return (
     <ToastProvider>
@@ -82,7 +82,7 @@ const styles = {
   products: {
     display: "flex",
     gap: "20px",
-    flexWrap: "wrap",             // Cards wrap to next line on smaller screens
+    flexWrap: "wrap",           // Cards wrap to next line on smaller screens
     justifyContent: "center",     // Center cards horizontally
   },
 };
