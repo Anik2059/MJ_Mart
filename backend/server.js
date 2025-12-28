@@ -13,7 +13,10 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Routes
 app.use("/api/products", require("./routes/products"));
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log("Backend server running on port 5000");
+// 🔴 CHANGE 1: Use process.env.PORT for Render
+const PORT = process.env.PORT || 5000; 
+
+// 🔴 CHANGE 2: Bind to 0.0.0.0 (Required by Render)
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend server running on port ${PORT}`);
 });
